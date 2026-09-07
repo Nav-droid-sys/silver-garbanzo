@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Excel generated outputs / temporary dumps (Optional)
+Tasks_*.txt
+
+# IDE & System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
