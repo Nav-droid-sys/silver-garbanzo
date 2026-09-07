@@ -6,7 +6,9 @@ venv/
 .venv/
 env/
 
-# Excel generated outputs / temporary dumps (Optional)
+# Excel files and data dumps
+*.xlsx
+*.zip
 Tasks_*.txt
 
 # IDE & System
