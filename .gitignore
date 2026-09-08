@@ -10,6 +10,12 @@ env/
 *.xlsx
 *.zip
 Tasks_*.txt
+uploads/
+
+# Temporary test files & logs
+scratch/
+*.tmp
+*.log
 
 # IDE & System
 .vscode/

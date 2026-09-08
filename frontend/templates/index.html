@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERPUNK // Task Extractor & Billing Sync HUD</title>
+    <!-- Google Fonts: Fira Code & Share Tech Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="theme-neon crt-overlay">
+    
+    <!-- CRT Scanline Layer -->
+    <div class="scanline-layer" id="scanlines"></div>
+
+    <!-- HUD Container -->
+    <div class="hud-container">
+        
+        <!-- Top Navigation Header -->
+        <header class="hud-header">
+            <div class="header-brand">
+                <span class="hud-glitch" data-text="TASK_EXTRACTOR_v2.0">TASK_EXTRACTOR_v2.0</span>
+                <span class="hud-badge pulse">ONLINE // MASTER_SYNC</span>
+            </div>
+            
+            <div class="header-controls">
+                <!-- Theme Selectors -->
+                <div class="theme-selector">
+                    <span class="control-label">THEME:</span>
+                    <button class="theme-btn active" data-theme="neon">[NEON CYAN]</button>
+                    <button class="theme-btn" data-theme="amber">[AMBER CRT]</button>
+                    <button class="theme-btn" data-theme="matrix">[MATRIX GREEN]</button>
+                </div>
+                
+                <!-- CRT Scanlines Toggle -->
+                <button class="hud-toggle-btn active" id="toggleScanlines">[SCANLINES: ON]</button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <div class="hud-grid">
+            
+            <!-- LEFT PANEL: File Upload & Assignee Directory -->
+            <aside class="hud-panel sidebar-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">⚙</span>
+                    <span class="panel-title">SOURCE_DATASET</span>
+                </div>
+
+                <!-- Dropzone Upload Area -->
+                <div class="dropzone" id="dropzone">
+                    <div class="dropzone-icon">📁</div>
+                    <div class="dropzone-text" id="dropzoneText">DRAG & DROP EXCEL FILE HERE</div>
+                    <div class="dropzone-sub">or click to browse (.xlsx)</div>
+                    <input type="file" id="fileInput" accept=".xlsx" style="display:none;">
+                </div>
+                <div class="current-file-badge" id="currentFileBadge">
+                    Active: <span id="currentFileName">abhinav-input-Jun'26dump.xlsx</span>
+                </div>
+
+                <!-- Assignee Search & Directory -->
+                <div class="panel-header margin-top">
+                    <span class="panel-icon">👤</span>
+                    <span class="panel-title">ASSIGNEE_DIRECTORY</span>
+                    <span class="counter-badge" id="assigneeCount">0</span>
+                </div>
+
+                <div class="search-box">
+                    <span class="search-prompt">&gt;</span>
+                    <input type="text" id="searchAssignee" placeholder="Search assignee..." autocomplete="off">
+                </div>
+
+                <div class="assignee-list" id="assigneeList">
+                    <div class="loading-spinner">LOADING ASSIGNEES...</div>
+                </div>
+            </aside>
+
+            <!-- RIGHT PANEL: Controls, CLI Emulator & Data Preview -->
+            <main class="hud-panel main-panel">
+                
+                <!-- Target Assignee Header Banner -->
+                <div class="assignee-banner" id="assigneeBanner">
+                    <div class="banner-left">
+                        <span class="banner-label">TARGET ASSIGNEE:</span>
+                        <span class="banner-name" id="selectedAssigneeName">SELECT AN ASSIGNEE</span>
+                    </div>
+                    <div class="banner-right">
+                        <span class="stat-pill"><span id="targetTaskCount">0</span> TASKS</span>
+                        <span class="stat-pill highlight"><span id="targetPointsCount">0.00</span> POINTS</span>
+                    </div>
+                </div>
+
+                <!-- Filter Controller Tabs & Panels -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <span class="filter-label">DUMP FILTER MODE:</span>
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-mode="all">[1] DUMP ALL</button>
+                            <button class="filter-tab" data-mode="single">[2] SINGLE MONTH</button>
+                            <button class="filter-tab" data-mode="range">[3] DATE RANGE</button>
+                        </div>
+                    </div>
+
+                    <!-- Single Month Sub-Panel -->
+                    <div class="filter-subpanel hidden" id="singleMonthPanel">
+                        <div class="subpanel-title">AVAILABLE MONTH & YEAR PERIODS:</div>
+                        <div class="month-badges" id="monthBadges">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Date Range Sub-Panel -->
+                    <div class="filter-subpanel hidden" id="dateRangePanel">
+                        <div class="subpanel-title">SELECT TIME PERIOD RANGE:</div>
+                        <div class="range-inputs">
+                            <div class="input-group">
+                                <label>START MONTH & YEAR:</label>
+                                <input type="text" id="startMonthInput" placeholder="e.g. Jan 2025">
+                            </div>
+                            <div class="range-arrow">➔</div>
+                            <div class="input-group">
+                                <label>END MONTH & YEAR:</label>
+                                <input type="text" id="endMonthInput" placeholder="e.g. Jun 2026">
+                            </div>
+                            <button class="action-btn-sm" id="applyRangeBtn">APPLY RANGE</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLI Terminal Emulator Output Console -->
+                <div class="terminal-box">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">CLI_TERMINAL_CONSOLE</span>
+                    </div>
+                    <div class="terminal-console" id="terminalConsole">
+                        <div class="log-line system">[SYSTEM INITIALIZED] Cyberpunk Task Extractor v2.0 Online.</div>
+                        <div class="log-line info">Type 'help' in terminal below or select options above.</div>
+                    </div>
+                    <!-- CLI Interactive Command Input -->
+                    <div class="terminal-prompt-bar">
+                        <span class="prompt-symbol">CYBERPUNK&gt;</span>
+                        <input type="text" id="cliInput" placeholder="Type command (e.g. select 1, filter range Jan 2025 Jun 2026, dump, download)..." autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Extracted Data Preview Table -->
+                <div class="preview-section">
+                    <div class="preview-header">
+                        <span>EXTRACTED TASK PREVIEW (<span id="previewTaskCount">0</span> tasks)</span>
+                        <span class="preview-info" id="previewFilterTag">Filter: ALL</span>
+                    </div>
+                    
+                    <div class="table-wrapper">
+                        <table class="hud-table" id="previewTable">
+                            <thead>
+                                <tr>
+                                    <th>TASK ID</th>
+                                    <th>ESTIMATOR PTS</th>
+                                    <th>MILESTONE REACHED</th>
+                                    <th>PERIOD / MONTH-YEAR</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewTableBody">
+                                <tr>
+                                    <td colspan="4" class="empty-msg">No assignee selected yet. Select a resource from the directory.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Action Button Controls -->
+                <div class="action-bar">
+                    <button class="action-btn primary" id="dumpBtn" disabled>
+                        ⚡ EXTRACT & SYNC TO MASTER EXCEL
+                    </button>
+                    <button class="action-btn success" id="downloadBtn">
+                        📥 DOWNLOAD BILLING_EXTRACTED_REPORT.XLSX
+                    </button>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
