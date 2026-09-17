@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Task Extractor | Wipro Task Extractor{% endblock %}
+
+{% block content %}
+<div class="page-header flex-between">
+    <div>
+        <h1 class="page-title">Task Extractor Workspace</h1>
+        <p class="page-description">Filter tasks by date periods, preview milestone details, and sync to Master Excel.</p>
+    </div>
+    <a href="/dataset" class="btn btn-secondary btn-sm">
+        ➔ Switch Assignee
+    </a>
+</div>
+
+<div class="workspace-layout">
+    
+    <!-- Target Assignee Header Banner -->
+    <div class="card assignee-banner" id="assigneeBanner">
+        <div class="banner-info">
+            <span class="banner-subtitle">Target Assignee</span>
+            <h2 class="banner-title" id="selectedAssigneeName">Select an Assignee</h2>
+        </div>
+        <div class="banner-metrics">
+            <div class="metric-card">
+                <span class="metric-value" id="targetTaskCount">0</span>
+                <span class="metric-label">Total Tasks</span>
+            </div>
+            <div class="metric-card primary">
+                <span class="metric-value" id="targetPointsCount">0.00</span>
+                <span class="metric-label">Estimator Points</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dump Filter Controller -->
+    <div class="card filter-card">
+        <div class="filter-header">
+            <span class="filter-label">Dump Filter Mode:</span>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-mode="all">Dump All</button>
+                <button class="filter-tab" data-mode="single">Single Month</button>
+                <button class="filter-tab" data-mode="range">Date Range</button>
+            </div>
+        </div>
+
+        <!-- Single Month Sub-Panel -->
+        <div class="filter-subpanel hidden" id="singleMonthPanel">
+            <div class="subpanel-label">Available Month & Year Periods:</div>
+            <div class="month-badges" id="monthBadges">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Date Range Sub-Panel -->
+        <div class="filter-subpanel hidden" id="dateRangePanel">
+            <div class="subpanel-label">Select Date Range Period:</div>
+            <div class="range-inputs">
+                <div class="input-field">
+                    <label>Start Period</label>
+                    <input type="text" id="startMonthInput" placeholder="e.g. Jan 2025">
+                </div>
+                <span class="range-separator">➔</span>
+                <div class="input-field">
+                    <label>End Period</label>
+                    <input type="text" id="endMonthInput" placeholder="e.g. Jun 2026">
+                </div>
+                <button class="btn btn-secondary btn-sm" id="applyRangeBtn">Apply Range</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extracted Data Preview Table -->
+    <div class="card preview-card">
+        <div class="card-header">
+            <div class="header-title">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                Extracted Task Preview (<span id="previewTaskCount">0</span> tasks)
+            </div>
+            <span class="filter-tag" id="previewFilterTag">Filter: ALL</span>
+        </div>
+
+        <div class="table-wrapper large">
+            <table class="data-table" id="previewTable">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Estimator Pts</th>
+                        <th>Milestone Reached</th>
+                        <th>Period / Month-Year</th>
+                    </tr>
+                </thead>
+                <tbody id="previewTableBody">
+                    <tr>
+                        <td colspan="4" class="empty-state">No assignee selected yet. <a href="/dataset">Go to Directory to select a resource.</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Action Button Controls -->
+    <div class="action-grid">
+        <button class="btn btn-primary btn-lg" id="dumpBtn" disabled>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Extract & Sync to Master Excel
+        </button>
+        <button class="btn btn-success btn-lg" id="downloadBtn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Billing_Extracted_Report.xlsx
+        </button>
+    </div>
+
+</div>
+{% endblock %}

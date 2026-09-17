@@ -52,8 +52,19 @@ def parse_workbook_file(filepath):
 
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+@app.route("/dataset")
+def page_dataset():
+    return render_template("dataset.html")
+
+
+@app.route("/extractor")
+def page_extractor():
+    return render_template("extractor.html")
+
+
+@app.route("/reports")
+def page_reports():
+    return render_template("reports.html")
 
 
 @app.route("/api/load", methods=["GET"])
@@ -259,7 +270,7 @@ def api_download_master():
 
 def start_server(port=5000):
     print("\n  +-----------------------------------------------------+")
-    print("  |   CYBERPUNK TASK EXTRACTOR - Web Server Starting    |")
+    print("  |   WIPRO TASK EXTRACTOR - Web Server Starting        |")
     print(f"  |   URL: http://127.0.0.1:{port}                        |")
     print("  +----------------------------------------------------+\n")
     app.run(host="127.0.0.1", port=port, debug=True)

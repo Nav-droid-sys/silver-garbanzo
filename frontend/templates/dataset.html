@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Dataset & Directory | Wipro Task Extractor{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Dataset & Assignee Directory</h1>
+    <p class="page-description">Manage Excel source dump files and select a target resource from the directory.</p>
+</div>
+
+<div class="dataset-grid">
+    
+    <!-- LEFT COLUMN: Source File Upload -->
+    <div class="card">
+        <div class="card-header">
+            <div class="header-title">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Source Dataset Upload
+            </div>
+        </div>
+
+        <div class="dropzone" id="dropzone">
+            <div class="dropzone-icon-box">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="dropzone-text" id="dropzoneText">Drag & drop Excel dump file here</div>
+            <div class="dropzone-sub">or click to browse (.xlsx)</div>
+            <input type="file" id="fileInput" accept=".xlsx" style="display:none;">
+        </div>
+
+        <div class="current-file-badge" id="currentFileBadge">
+            <span class="file-label">Active Source File:</span>
+            <span class="file-name" id="currentFileName">abhinav-input-Jun'26dump.xlsx</span>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Assignee Directory & Selection CTA -->
+    <div class="directory-column">
+        
+        <!-- Active Selection Summary Banner -->
+        <div class="card selection-cta-card">
+            <div class="cta-info">
+                <span class="cta-label">Selected Assignee:</span>
+                <h3 class="cta-name" id="selectedAssigneeName">Select an Assignee Below</h3>
+            </div>
+            <button class="btn btn-primary btn-lg" id="proceedToExtractorBtn" disabled>
+                Proceed to Task Extractor
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Directory Card -->
+        <div class="card flex-1">
+            <div class="card-header">
+                <div class="header-title">
+                    <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                    </svg>
+                    Assignee Resource Directory
+                </div>
+                <span class="count-badge" id="assigneeCount">0</span>
+            </div>
+
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchAssignee" placeholder="Search assignee name..." autocomplete="off">
+            </div>
+
+            <div class="assignee-list large" id="assigneeList">
+                <div class="loading-state">Loading directory...</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

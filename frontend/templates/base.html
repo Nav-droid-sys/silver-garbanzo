@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Wipro | Task Extractor & Billing Sync{% endblock %}</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    
+    <!-- Top Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="brand">
+                <div class="wipro-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                    <span class="dot dot-blue"></span>
+                </div>
+                <div class="brand-text">
+                    <a href="/dataset" class="brand-link">
+                        <span class="brand-title">wipro</span>
+                        <span class="brand-divider">|</span>
+                        <span class="brand-subtitle">Task Extractor & Billing Sync</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
+            <nav class="nav-tabs">
+                <a href="/dataset" class="nav-tab {% if request.path == '/' or request.path == '/dataset' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Dataset & Directory
+                </a>
+                <a href="/extractor" class="nav-tab {% if request.path == '/extractor' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    Task Extractor
+                </a>
+                <a href="/reports" class="nav-tab {% if request.path == '/reports' %}active{% endif %}">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    Activity & Reports
+                </a>
+            </nav>
+
+            <div class="header-status">
+                <span class="status-indicator"></span>
+                <span class="status-text">System Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Context Bar (Persistent Active File & Assignee) -->
+    <div class="context-bar">
+        <div class="context-container">
+            <div class="context-item">
+                <span class="context-label">Active Dataset:</span>
+                <span class="context-value" id="hdrFileName">abhinav-input-Jun'26dump.xlsx</span>
+            </div>
+            <div class="context-divider">•</div>
+            <div class="context-item">
+                <span class="context-label">Selected Assignee:</span>
+                <span class="context-value highlight" id="hdrAssigneeName">None Selected</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main View Content -->
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

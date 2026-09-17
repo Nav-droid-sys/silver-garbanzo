@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Activity & Reports | Wipro Task Extractor{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">System Activity & Reports Center</h1>
+    <p class="page-description">View real-time execution logs, download master billing reports, and run quick commands.</p>
+</div>
+
+<div class="reports-grid">
+    
+    <!-- Report Download Center Card -->
+    <div class="card report-download-card">
+        <div class="card-header">
+            <div class="header-title">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Master Billing Report Download Center
+            </div>
+        </div>
+
+        <div class="report-box">
+            <div class="report-icon">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#2563eb" stroke-width="1.6">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+            </div>
+            <div class="report-details">
+                <h3 class="report-name">Billing_Extracted_Report.xlsx</h3>
+                <p class="report-desc">Extracted tasks synced into master formatted spreadsheet with headers, milestone tags, and estimator scores.</p>
+            </div>
+            <button class="btn btn-success btn-lg" id="downloadBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Master Report
+            </button>
+        </div>
+    </div>
+
+    <!-- System Activity Log Feed Card -->
+    <div class="card activity-card flex-1">
+        <div class="card-header">
+            <div class="header-title">
+                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                System Execution Activity Log
+            </div>
+            <button class="btn btn-secondary btn-sm" id="clearLogBtn">Clear Log</button>
+        </div>
+        
+        <div class="activity-feed large" id="terminalConsole">
+            <div class="activity-item info">
+                <span class="activity-time">[SYSTEM]</span>
+                <span class="activity-msg">Wipro Task Extractor Activity Log Session Active.</span>
+            </div>
+        </div>
+
+        <!-- Quick Command Console -->
+        <div class="quick-action-bar">
+            <span class="action-symbol">⌨</span>
+            <input type="text" id="cliInput" placeholder="Type quick command (e.g. help, list, select 1, filter range Jan 2025 Jun 2026, dump, download)..." autocomplete="off">
+        </div>
+    </div>
+
+</div>
+{% endblock %}
